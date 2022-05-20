@@ -1,8 +1,13 @@
 import React, { useState } from "react";
+import { auth } from "../firebase";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 function Login() {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
+  let [user, setUser] = useState(null);
+  let [loader, setLoader] = useState(false);
+  let [error, setError] = useState("");
 
   const trackEmail = (e) => {
     setEmail(e.target.value);
@@ -12,29 +17,46 @@ function Login() {
     setPassword(e.target.value);
   };
 
-  const printDetails = () => {
-    alert(email + " " + password);
+  const printDetails = async () => {
+    try {
+        setLoader(true);
+        let userCred = await signInWithEmailAndPassword(auth, email, password);
+        setUser(userCred.user);
+    } catch (err) {
+        setError(err.message)
+        setTimeout(() => {
+            setError("")
+        }, 2000)
+    }
+    setLoader(false);
   };
+
+  const signout = async () => {
+      await signOut(auth)
+      setUser(null)
+  }
 
   return (
     <>
-      <input
-        type="email"
-        onChange={trackEmail}
-        value={email}
-        placeholder="email"
-      ></input>
-      <br></br>
-      <input
-        type="password"
-        onChange={trackPassword}
-        value={password}
-        placeholder="password"
-      ></input>
-      <br></br>
-      <button type="click" onClick={printDetails}>
-        Login
-      </button>
+      {
+        error != "" ? <h1>Error is {error}</h1> :
+          loader == true ? <h1>......loading</h1> : 
+            user != null ? 
+              <>
+                <button onClick={signout}>Signout</button>
+                <h1>user is {user.uid}</h1>
+              </>
+                : 
+                    <>
+                        <input type="email" onChange={trackEmail} value={email} placeholder="email"></input>
+                        <br></br>
+                        <input type="password" onChange={trackPassword} value={password} placeholder="password"></input>
+                        <br></br>
+                        <button type="click" onClick={printDetails}>
+                            Login
+                        </button>
+                    </>
+      }
     </>
   );
 }
