@@ -12,6 +12,7 @@ function Login() {
   let [user, setUser] = useState(null);
   let [loader, setLoader] = useState(false);
   let [error, setError] = useState("");
+  let [mainLoader, setMainLoader] = useState(true)
 
   const trackEmail = (e) => {
     setEmail(e.target.value);
@@ -47,12 +48,15 @@ function Login() {
       } else {
         setUser(null);
       }
+      setMainLoader(false)
     });
   }, []);
 
   return (
     <>
-      {error != "" ? (
+      {
+        mainLoader == true ? <h1>Page Loading......</h1> : 
+      error != "" ? (
         <h1>Error is {error}</h1>
       ) : loader == true ? (
         <h1>......loading</h1>
