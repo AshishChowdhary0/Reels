@@ -5,31 +5,34 @@ import PageNotFound from "./components/PageNotFound";
 import Profile from "./components/Profile";
 import Signup from "./components/Signup";
 import { Switch, Route } from "react-router-dom";
+import { AuthContextProvider } from "./context/AuthContext";
 
 function App() {
   return (
     <>
-      <Switch>
-        <Route path="/feed">
-          <Feed />
-        </Route>
+      <AuthContextProvider>
+        <Switch>
+          <Route path="/feed">
+            <Feed />
+          </Route>
 
-        <Route path="/login">
-          <Login />
-        </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
 
-        <Route path="/signup">
-          <Signup />
-        </Route>
+          <Route path="/signup">
+            <Signup />
+          </Route>
 
-        <Route path="/profile">
-          <Profile />
-        </Route>
+          <Route path="/profile">
+            <Profile />
+          </Route>
 
-        <Route>
-          <PageNotFound />
-        </Route>
-      </Switch>
+          <Route>
+            <PageNotFound />
+          </Route>
+        </Switch>
+      </AuthContextProvider>
     </>
   );
 }

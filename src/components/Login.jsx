@@ -12,7 +12,6 @@ function Login() {
   let [user, setUser] = useState(null);
   let [loader, setLoader] = useState(false);
   let [error, setError] = useState("");
-  let [mainLoader, setMainLoader] = useState(true)
 
   const trackEmail = (e) => {
     setEmail(e.target.value);
@@ -48,44 +47,39 @@ function Login() {
       } else {
         setUser(null);
       }
-      setMainLoader(false)
     });
   }, []);
 
   return (
     <>
       {
-        mainLoader == true ? <h1>Page Loading......</h1> : 
-      error != "" ? (
-        <h1>Error is {error}</h1>
-      ) : loader == true ? (
-        <h1>......loading</h1>
-      ) : user != null ? (
-        <>
-          <button onClick={signout}>Signout</button>
-          <h1>user is {user.uid}</h1>
-        </>
-      ) : (
-        <>
-          <input
-            type="email"
-            onChange={trackEmail}
-            value={email}
-            placeholder="email"
-          ></input>
-          <br></br>
-          <input
-            type="password"
-            onChange={trackPassword}
-            value={password}
-            placeholder="password"
-          ></input>
-          <br></br>
-          <button type="click" onClick={printDetails}>
-            Login
-          </button>
-        </>
-      )}
+        error != "" ? <h1>Error is {error}</h1> : 
+        loader == true ? <h1>......loading</h1> : 
+        user != null ? 
+          <>
+            <button onClick={signout}>Signout</button>
+            <h1>user is {user.uid}</h1>
+          </> : 
+          <>
+            <input
+              type="email"
+              onChange={trackEmail}
+              value={email}
+              placeholder="email"
+            ></input>
+            <br></br>
+            <input
+              type="password"
+              onChange={trackPassword}
+              value={password}
+              placeholder="password"
+            ></input>
+            <br></br>
+            <button type="click" onClick={printDetails}>
+              Login
+            </button>
+          </>
+      }
     </>
   );
 }
